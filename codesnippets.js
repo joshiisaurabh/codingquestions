@@ -112,7 +112,7 @@ Please run each snippet seperately to understand it better
 })();
 
 
-    //4) What will be output:
+    //3) What will be output:
     (async () => {
         function display1() {
             return {
@@ -138,7 +138,7 @@ Please run each snippet seperately to understand it better
 
 
 
-//5) What will be output:
+//4) What will be output:
 (async () => {
 
     var p=t=10;
