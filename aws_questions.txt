@@ -1,0 +1,138 @@
+1)What is cold start in aws lambda?
+ans:
+In AWS Lambda, a "cold start" refers to the initial startup time of a function when it is invoked for the first time or after a period of inactivity. When a Lambda function receives an event for processing, the AWS infrastructure needs to allocate the necessary compute resources to run the function code.
+
+During a cold start, AWS creates a new container to host the Lambda function, initializes the runtime environment, and loads the function code and dependencies. This process may take some time, typically ranging from a few milliseconds to a few seconds, depending on the complexity of the function, the size of the code and dependencies, and the underlying infrastructure's current state.
+
+Subsequent invocations of the same Lambda function within a short period (usually a few minutes) are referred to as "warm starts." During warm starts, the AWS infrastructure reuses the existing container that was created during the initial cold start. This leads to significantly faster invocation times compared to cold starts, as the container is already initialized and the function code is readily available for execution.
+
+It's important to be aware of cold starts when using AWS Lambda, especially for applications with strict real-time requirements or low-latency needs. For some use cases, the cold start delay may impact the overall performance or user experience.
+
+To mitigate the impact of cold starts, consider the following strategies:
+
+Provisioned Concurrency: AWS offers "provisioned concurrency," which allows you to pre-warm Lambda functions by keeping a certain number of initialized containers ready to handle requests. This helps reduce the frequency of cold starts.
+
+Keep Warm Strategy: Schedule periodic invocations of your Lambda function to keep it warm. You can use AWS CloudWatch Events or external services like AWS Step Functions to trigger these periodic invocations.
+
+Optimize Function Code and Dependencies: Minimize the size and complexity of your function code and dependencies to reduce the cold start time.
+
+Use Lambda Layers: Separate out shared dependencies into Lambda layers, so they don't need to be loaded during every cold start, potentially reducing initialization time.
+
+Keep in mind that the frequency and impact of cold starts depend on various factors, such as the region, the size of the Lambda function, and the request rate. By understanding cold starts and implementing appropriate strategies, you can optimize the performance and responsiveness of your AWS Lambda functions.
+
+Ex:
+functions:
+  myFunction:
+    handler: handler.myFunction
+    provisionedConcurrency: 5
+    events:
+      - http:
+          path: /my-function
+          method: GET
+
+
+2)What is Reserve concurrency in aws lambda?
+"Reserve concurrency": This is the maximum number of concurrent executions you want to allow for the function. It represents the total number of concurrent requests that can be processed simultaneously.
+"Account concurrency": This represents the unreserved concurrency for your AWS account, which is the difference between the total concurrency in your account and the concurrency reserved by all functions.          
+
+In this example, we set the reserve concurrency for myFunction to 10. This means AWS Lambda will always reserve 10 concurrent executions for this function, even if the unreserved concurrency is fully utilized by other functions in the AWS account.
+functions:
+  myFunction:
+    handler: handler.myFunction
+    reservedConcurrency: 10
+    events:
+      - http:
+          path: /my-function
+          method: GET
+
+Keep in mind that reserve concurrency is useful when you want to ensure that a specific Lambda function always has a certain number of concurrent executions available, even during spikes in traffic or when other functions in the account consume the unreserved concurrency.
+
+Using reserve concurrency in the Serverless Framework allows you to fine-tune the concurrency settings for individual Lambda functions in your application, helping you optimize performance and resource utilization based on your application's specific needs.
+
+
+3)What is above handler function in lambda is this global? I mean container what is container?
+ans:
+In AWS Lambda, a "container" refers to an execution environment in which your Lambda function code runs. When you deploy a Lambda function, AWS manages the underlying infrastructure to run your function in a stateless container. This container is isolated from other Lambda functions and provides a runtime environment where your code executes.
+
+When you invoke a Lambda function, AWS creates an instance of the function in one or more containers to handle the incoming request. The containers are managed and scaled automatically by AWS to accommodate the incoming request load. Once the Lambda function completes its execution, the container may be kept alive for a short time in case another request arrives. This is done to improve the performance and reduce the latency of subsequent invocations.
+
+The statement "Each time the Lambda function is invoked within the same container" means that if you invoke the Lambda function multiple times in quick succession (e.g., due to a burst of requests), AWS might reuse the same container to process those invocations. When a container is reused for subsequent invocations, it provides some advantages:
+
+Faster Startup: Reusing a container eliminates the need to initialize a new container for each invocation, reducing the overhead of starting a new runtime environment.
+
+Resource Reuse: If your Lambda function sets up and maintains any resources or connections (e.g., database connections, cached data) that can be reused across invocations, reusing the same container allows you to retain those resources.
+
+State Retention: Global variables defined above the handler function retain their values as long as the container is active. This can be helpful if you need to maintain state or carry over data between invocations.
+
+However, it's important to note that container reuse is not guaranteed. AWS manages the lifecycle of containers and may decide to terminate or create new containers based on factors like request load, resource availability, and container age. As a result, while reusing the same container can improve performance and resource utilization, your Lambda function must be designed to handle each invocation independently without relying on state retention between invocations.
+
+In summary, when you invoke a Lambda function multiple times in rapid succession, there's a possibility that AWS will reuse the same container to handle those invocations. This can lead to improved performance and resource utilization, but it's essential to design your Lambda functions to be stateless and handle each invocation independently. If you need to maintain state, consider using external data storage or caching services.
+
+
+4)What is dead letter queue in aws sqs?
+A Dead Letter Queue (DLQ) in Amazon Simple Queue Service (Amazon SQS) is a queue that acts as a destination for messages that cannot be processed successfully by the consumer (consumer here refers to the application or service that reads and processes messages from the main queue). When a message in the main queue fails to be processed a certain number of times, it is moved to the associated Dead Letter Queue for further analysis and troubleshooting.
+
+Here's how the Dead Letter Queue works in SQS:
+
+Main Queue: The main queue is the primary SQS queue where messages are sent and read by consumers. Consumers poll the main queue and process the messages.
+
+Retry Attempts: When a consumer receives a message from the main queue, it processes the message. If the processing fails, the consumer has the option to either delete the message from the queue (message is considered processed) or leave it in the queue (message remains unprocessed).
+
+Visibility Timeout: When a consumer receives a message from the main queue and doesn't delete it immediately, the message remains in a hidden state for a specified "visibility timeout" period. During this time, other consumers won't receive the same message for processing.
+
+Maximum Receive Count: If a consumer fails to process a message and doesn't delete it before the visibility timeout expires, the message becomes visible again for other consumers to process. The process of reattempting to process the message is repeated until a certain number of "receive count" attempts is reached.
+
+Move to Dead Letter Queue: Once the maximum receive count attempts are exhausted, and the message still couldn't be processed successfully, the message is considered to have "failed" and is automatically moved to the associated Dead Letter Queue.
+
+Analysis and Troubleshooting: The Dead Letter Queue allows developers and system administrators to analyze the failed messages separately from the main queue. It provides valuable insights into messages that encountered processing issues, helping diagnose and fix the underlying problems.
+
+The Dead Letter Queue helps in identifying and handling problematic messages that couldn't be successfully processed by the consumer. It's a useful tool for implementing robust and fault-tolerant message processing systems. By monitoring the Dead Letter Queue, developers can detect patterns of message failures, identify potential bugs or errors in their applications, and take appropriate actions to resolve the issues.
+
+To configure a Dead Letter Queue in SQS, you need to specify the RedrivePolicy attribute for the main queue. The RedrivePolicy defines the maximum number of receive attempts and the ARN (Amazon Resource Name) of the Dead Letter Queue.
+
+
+
+
+
+5)How to delete msgs in sqs queue?
+const AWS = require('aws-sdk');
+
+AWS.config.update({ region: 'your-aws-region' });
+
+const sqs = new AWS.SQS();
+
+const params = {
+  QueueUrl: 'your-queue-url', // Replace with your SQS queue URL
+  ReceiptHandle: 'receipt-handle-of-the-message', // Replace with the receipt handle of the message to delete
+};
+
+sqs.deleteMessage(params, (err, data) => {
+  if (err) {
+    console.log('Error deleting message:', err);
+  } else {
+    console.log('Message deleted:', data);
+  }
+});
+
+
+
+6)If sqs queue has only one consumer then visibility timeout expires then how will it again process by another consumer as it has only one consumer?
+Ans: If an SQS queue has only one consumer and the Visibility Timeout expires for a message, that message will not be processed by another consumer because there is only one consumer subscribed to the queue.
+
+To clarify, when a message is retrieved by the single consumer, it becomes invisible to other consumers for the duration of the Visibility Timeout. After the Visibility Timeout expires, the message becomes visible again, but since there is only one consumer, that consumer will be able to retrieve and process the message again.
+
+In the scenario where there is only one consumer, the Visibility Timeout ensures that the consumer has adequate time to process the message without interference from other consumers. If the consumer successfully processes the message and deletes it from the queue, the message is permanently removed from the queue and will not be processed again.
+
+The Visibility Timeout primarily applies when you have multiple consumers competing for messages in the same SQS queue. In such cases, the Visibility Timeout prevents multiple consumers from processing the same message simultaneously, providing a level of message handling coordination.
+
+However, if there is only one consumer, the Visibility Timeout is still relevant in the context of that single consumer, as it ensures that the consumer has exclusive access to process the message within the specified timeout period.
+
+In summary, in a scenario with a single consumer:
+
+The Visibility Timeout allows the single consumer exclusive access to process a message for a specified period.
+If the single consumer successfully processes and deletes the message within the Visibility Timeout, the message is permanently removed from the queue.
+If the Visibility Timeout expires before the single consumer deletes the message, the same consumer will have access to retrieve and process the message again.
+
+
+
+
