@@ -1,0 +1,21 @@
+1)200 series in http?
+200 OK:
+
+This is the most common status code in the 2xx series. It indicates that the request was successful, and the server has returned the requested resource or performed the requested action.
+201 Created:
+
+This status code indicates that the request has been fulfilled, and a new resource has been created as a result. It is typically used in response to a POST request to indicate the successful creation of a new resource.
+202 Accepted:
+
+This status code indicates that the request has been accepted for processing but has not been completed yet. It is often used for asynchronous operations where the server needs more time to fulfill the request.
+204 No Content:
+
+This status code indicates that the server successfully processed the request but is not returning any content in the response body. It is commonly used for actions that do not require a response body, such as deleting a resource.
+These are just a few examples of the 2xx series status codes. Each code within this series carries its own specific meaning, providing information about the success and outcome of the client's request.
+
+2)400 series:
+Ans: client side error
+
+3)500 series:
+Ans: server side error
+

@@ -1,0 +1,36 @@
+1)What are 12 principles of microservice architecture?
+ans:
+Microservice architecture is a software design approach that structures an application as a collection of loosely coupled and independently deployable services. It aims to enhance scalability, agility, and maintainability of the overall system. Here are 12 principles of microservice architecture:
+
+Single Responsibility: Each microservice should have a single responsibility or business capability. It should focus on doing one thing and doing it well.
+
+
+Autonomous: Microservices should be self-contained and independent. They should have their own data storage, business logic, and deployment process. They can be developed, deployed, and scaled independently of other services.
+
+
+Decentralized Governance: Decision-making authority and control are distributed among the microservices teams. There is no central authority governing the entire system.
+
+
+API First: Microservices communicate with each other through well-defined APIs (Application Programming Interfaces). APIs should be designed carefully, emphasizing clarity and ease of use.
+
+
+Language and Technology Agnostic: Microservices can be implemented using different programming languages, frameworks, and technologies. Each microservice team can choose the best tools for their specific needs.
+
+Resilience: Microservices should be designed to handle failures gracefully. They should be fault-tolerant, isolated, and resilient to network failures and other external dependencies.
+
+Scalability: Microservices allow individual services to be scaled independently based on their specific demand. This ensures efficient resource utilization and improves overall system scalability.
+
+Continuous Integration and Deployment: Each microservice should have its own automated build, test, and deployment pipeline. This enables rapid and independent release cycles for each service.
+
+Infrastructure Automation: Infrastructure provisioning, deployment, and management should be automated using tools like containers, orchestration platforms, and infrastructure as code.
+
+Observability: Microservices should provide mechanisms for monitoring, logging, and tracing to gain insights into their behavior and performance. This helps in debugging, troubleshooting, and performance optimization.
+
+Loose Coupling: Microservices should be loosely coupled to minimize dependencies between services. They should communicate asynchronously and avoid sharing data models or databases.
+
+Domain-Driven Design: Microservices should align with domain boundaries and business capabilities. The design should reflect the domain-specific context and be organized around business concepts.
+
+These principles guide the design and implementation of microservices, promoting modularity, flexibility, and scalability. However, it's important to note that the application of these principles may vary depending on the specific needs and context of each system.
+
+
+

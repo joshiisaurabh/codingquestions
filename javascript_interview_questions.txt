@@ -1,0 +1,161 @@
+1)How to cancel a request in JavaScript?
+Ans:
+To cancel an API request in JavaScript,
+you can use the AbortController interface, 
+which is part of the fetch API and provides a way to abort network requests.
+Here's a step-by-step guide on how to do it:
+Create an instance of AbortController:
+const abortController = new AbortController();
+const abortSignal = abortController.signal;
+
+const fetchData = () => {
+  fetch(url, { signal: abortSignal })
+    .then(response => response.json())
+    .then(data => {
+      // Process the response data
+    })
+    .catch(error => {
+      // Handle errors, including aborted requests
+      if (error.name === 'AbortError') {
+        console.log('Request aborted!');
+      } else {
+        console.error('Error:', error);
+      }
+    });
+};
+
+To cancel the request, call the abort method on the AbortController:
+javascript:
+abortController.abort();
+
+
+2)What is proxy in javascript with respect to JSON?
+The Proxy object in JavaScript allows you to create a proxy for another object, intercepting and customizing its fundamental operations.
+Proxies are useful when you want to add custom behaviors or validations to an object. 
+When working with JSON, you can use a Proxy to validate or modify JSON data before or after parsing it.
+
+
+Example:
+
+
+const json = '{ "name": "John", "age": 30 }';
+
+const validator = {
+
+  set: function(target, property, value) {
+
+    if (property === 'age' && typeof value !== 'number') {
+
+      throw new Error('Age must be a number');
+
+    }
+
+    target[property] = value;
+
+    return true;
+
+  }
+
+};
+
+const parsedData = JSON.parse(json, (key, value) => new Proxy(value, validator));
+
+In the above example, a Proxy is used to validate that the "age" property in the JSON data is a number. 
+If it's not a number, an error is thrown.
+
+3)What is prototype in javascript with respect to JSON?
+ans:
+Prototypes are a fundamental concept in JavaScript's object-oriented programming model.
+Every object in JavaScript has a prototype, which is an object from which it inherits properties and methods.
+When working with JSON, prototypes may not have a direct impact, 
+as JSON represents data in a serialized format without preserving object prototypes.
+However, if you want to restore object prototypes 
+after parsing JSON, you can manually assign prototypes to the parsed objects using Object.setPrototypeOf().
+
+
+
+Example:
+
+
+
+javascript
+
+Copy code
+
+const jsonData = '{ "name": "John", "age": 30 }';
+
+const parsedData = JSON.parse(jsonData);
+
+const person = Object.create(Person.prototype);
+
+Object.assign(person, parsedData);
+
+In this example, after parsing the JSON data, 
+an object person is created with the prototype of a Person constructor. 
+The properties from the parsed data are then assigned to the person object.
+
+
+3)What is reflect?
+The key difference between Reflect and Proxy is that Proxy allows you to intercept and customize the behavior of these operations, while Reflect provides a straightforward way to perform them without interception. In other words, Reflect doesn't introduce any custom behavior on its own, but it helps you perform standard operations in a more standardized and explicit manner.
+Here are some common operations and their equivalents using Reflect:
+
+Property Access:
+
+Without Reflect:
+javascript
+Copy code
+const obj = { name: 'John' };
+const value = obj.name;
+
+With Reflect:
+javascript
+Copy code
+const obj = { name: 'John' };
+const value = Reflect.get(obj, 'name');
+Property Assignment:
+
+Without Reflect:
+javascript
+Copy code
+const obj = { name: 'John' };
+obj.age = 30;
+
+With Reflect:
+javascript
+Copy code
+const obj = { name: 'John' };
+Reflect.set(obj, 'age', 30);
+Function Invocation:
+
+Without Reflect:
+javascript
+Copy code
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+greet('John');
+With Reflect:
+javascript
+Copy code
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+Reflect.apply(greet, null, ['John']);
+Object Creation:
+
+Without Reflect:
+javascript
+Copy code
+const obj = new MyClass();
+With Reflect:
+javascript
+Copy code
+const obj = Reflect.construct(MyClass, []);
+By using Reflect, you can perform these operations in a more explicit and consistent manner. This consistency is especially useful in scenarios where you want to work with objects and functions programmatically or dynamically, as it allows you to use a unified interface regardless of the operation type.
+
+It's worth noting that Reflect and Proxy are often used together. In many Proxy handlers, you'll find Reflect methods being used to perform standard operations within custom behaviors defined by the Proxy. This combination of Reflect and Proxy provides a powerful way to manipulate and control the behavior of JavaScript objects.
+
+4)Higher-order function in javascript?
+ans:
+In JavaScript, a higher-order function is a function that takes one or 
+more functions as arguments and/or returns a function as its result. 

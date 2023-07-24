@@ -1,0 +1,137 @@
+1)Dependency injection in angular?
+
+Ans:
+Dependency injection in Angular is a mechanism that allows you to provide and use the required dependencies of a component or service without explicitly creating them within the component or service. It simplifies the management of dependencies by letting Angular take care of creating and providing them for you.
+
+In simpler terms, think of dependency injection as a way to get the things you need (dependencies) without having to worry about where they come from. Angular will automatically provide those dependencies for you based on the configuration you set up.
+
+For example, let's say you have a component that needs to fetch data from an API. Instead of manually creating an HTTP client within the component, you can declare the HTTP client as a dependency in the component's constructor. Angular's dependency injection system will then take care of creating and providing an instance of the HTTP client when the component is created, allowing you to use it seamlessly.
+
+By using dependency injection, you can easily manage and test your code, as dependencies can be easily swapped or mocked for testing purposes. It also promotes modular and reusable code since components and services can be developed independently and easily plugged into other parts of your application.
+
+2)Template ref vs element ref in angular?
+Ans:
+In Angular, "Template Ref" and "Element Ref" are both concepts related to accessing and interacting with elements in a component's template, but they serve different purposes:
+
+Template Ref:
+A Template Ref is a reference to an Angular template defined within the component's view. It allows you to access and manipulate the content of the template from within the component code. Template Refs are typically used to get a hold of specific elements or components in a template and perform actions on them programmatically.
+To create a Template Ref, you use the "#" symbol followed by a variable name, like this:
+
+html
+Copy code
+<!-- In the template -->
+<div #myTemplateRef>
+  <!-- Some content here -->
+</div>
+typescript
+Copy code
+// In the component class
+@ViewChild('myTemplateRef') myTemplateRef: ElementRef;
+In this example, myTemplateRef becomes a reference to the <div> element in the component, and you can use it to access properties and methods of the ElementRef class.
+
+Element Ref:
+An Element Ref is a reference to a specific DOM element in the component's template. It allows you to directly interact with that element in the DOM, such as reading or modifying its properties or attaching event listeners. Element Refs are used when you need to work with the actual DOM element, and they are obtained using the ElementRef class from Angular.
+To create an Element Ref, you use the ElementRef class in your component:
+
+typescript
+Copy code
+import { Component, ElementRef } from '@angular/core';
+
+@Component({
+  selector: 'app-my-component',
+  template: '<div #myElementRef></div>'
+})
+export class MyComponent {
+  constructor(private elementRef: ElementRef) {
+    // Access the DOM element using the ElementRef instance
+    const element: HTMLElement = this.elementRef.nativeElement;
+  }
+}
+Remember that using Element Ref should be done with caution since directly manipulating the DOM can lead to potential security vulnerabilities and can break Angular's change detection mechanism. It's generally recommended to follow Angular's data-binding and property-binding mechanisms for most use cases.
+
+In summary, Template Refs are used to reference Angular templates and access their content programmatically, while Element Refs are used to directly interact with DOM elements in the component's template.
+
+
+3)What are auth guards?
+Sure! In Angular, Auth Guards are used to control access to certain routes based on the user's authentication status or other conditions. They are a part of Angular's "Route Guards" feature, which allows you to protect routes and restrict navigation based on certain rules.
+
+Auth Guards play a crucial role in building secure Angular applications by preventing unauthorized access to certain parts of the application. They are typically used to check if a user is authenticated (logged in) before allowing them to navigate to specific routes.
+
+There are three main types of Auth Guards in Angular:
+
+CanActivate:
+The CanActivate guard is used to determine if a route can be activated or not. It checks if the user is authenticated and allowed to access the route. If the user is authenticated, the guard allows navigation to the route; otherwise, it can redirect the user to the login page or a different route.
+Example:
+
+typescript
+Copy code
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean {
+    // Your authentication logic goes here
+    if (userIsAuthenticated) {
+      return true;
+    } else {
+      // Redirect to the login page or some other route
+      this.router.navigate(['/login']);
+      return false;
+    }
+  }
+}
+CanActivateChild:
+The CanActivateChild guard works similarly to CanActivate, but it is used to control access to child routes of a parent route. It is useful when you want to protect all the child routes under a specific parent route.
+Example:
+
+typescript
+Copy code
+@Injectable()
+export class AuthGuard implements CanActivateChild {
+  canActivateChild(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean {
+    // Your authentication logic goes here
+    if (userIsAuthenticated) {
+      return true;
+    } else {
+      // Redirect to the login page or some other route
+      this.router.navigate(['/login']);
+      return false;
+    }
+  }
+}
+CanLoad:
+The CanLoad guard is used to determine if a module can be loaded or not. It is useful when you have lazy-loaded modules in your application and want to check if a user is authorized to load that module before fetching its code from the server.
+Example:
+
+typescript
+Copy code
+@Injectable()
+export class AuthGuard implements CanLoad {
+  canLoad(route: Route): boolean {
+    // Your authentication logic goes here
+    if (userIsAuthenticated) {
+      return true;
+    } else {
+      // Redirect to the login page or some other route
+      this.router.navigate(['/login']);
+      return false;
+    }
+  }
+}
+To use these Auth Guards, you need to provide them in your Angular application's routing configuration. You can apply them to specific routes or to an entire module, depending on your application's requirements.
+
+typescript
+Copy code
+const routes: Routes = [
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canLoad: [AuthGuard] },
+  // Other routes...
+];
+Remember to implement the necessary authentication logic inside your Auth Guard classes to determine if the user should be granted access to the desired routes. Auth Guards play a vital role in securing your Angular application and ensuring that only authorized users can access certain parts of it.
+
+
+
+
+

@@ -1,0 +1,25 @@
+1)Error handler and global error handler?
+ans:
+Both the error handler middleware and the global error handler serve different purposes. The error handler middleware is focused on handling errors that occur during the request processing flow, allowing you to customize the error response for the specific request. On the other hand, the global error handler is used to catch unhandled exceptions or rejections that may occur outside the regular request flow, providing a centralized mechanism to handle such errors.
+
+To implement a global error handler in Node.js, you can attach event listeners to the uncaughtException and unhandledRejection events of the process object. Here's an example of how you can set up a global error handler in Node.js:
+
+process.on('uncaughtException', function(err) {
+  // Custom error handling logic
+  console.error('Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', function(reason, promise) {
+  // Custom error handling logic
+  console.error('Unhandled Rejection:', reason);
+  process.exit(1);
+});
+
+2)Multicore process do they use the same port?
+Ans:
+No, in Node.js (or any other programming language/framework), you cannot bind multiple processes to the same port. When using a multicore system, each process or worker should listen on a different port.
+
+In the example provided in the previous response, each worker process was set to listen on port 3000. This is possible because each worker process is running as a separate instance, utilizing a different CPU core. The load balancer or network infrastructure in front of your Node.js application can distribute incoming requests across these worker processes using techniques like round-robin or other load balancing algorithms.
+
+By spreading the workload across multiple ports and worker processes, you can achieve parallel processing and take advantage of the multicore system's capabilities. However, it is essential to ensure that the load balancer or proxy in front of your Node.js application is properly configured to distribute the traffic to the available worker processes.
