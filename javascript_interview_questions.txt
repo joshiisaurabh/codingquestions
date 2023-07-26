@@ -159,3 +159,16 @@ It's worth noting that Reflect and Proxy are often used together. In many Proxy 
 ans:
 In JavaScript, a higher-order function is a function that takes one or 
 more functions as arguments and/or returns a function as its result. 
+
+5)Set vs Map?
+ans:
+A Set is a collection dataset that needs to be composed of unique values.
+new Set([1,2,3,4,4,7,7,7])
+output:1,2,3,4,7
+Unique Values.
+
+where a Map is when you have pairs
+of associated data when we map the keys to the value.
+
+
+6)

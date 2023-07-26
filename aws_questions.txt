@@ -136,3 +136,33 @@ If the Visibility Timeout expires before the single consumer deletes the message
 
 
 
+7)Different plugin in serverless?
+Ans:
+serverless-scriptable-plugin
+  - serverless-deployment-bucket
+  - serverless-prune-plugin
+  - serverless-iam-roles-per-function
+  - serverless-plugin-include-dependencies
+
+ 8)conginto pool vs identity pool?
+Ans:
+Let's explain AWS Cognito Pool and AWS Identity Pool in a simple way:
+
+AWS Cognito User Pool:
+
+Imagine you are managing a party and you want to keep track of the guests attending.
+AWS Cognito User Pool is like a guest list for your application or service.
+It provides a user directory or database where you can securely store and manage user identities, such as usernames, passwords, and other user attributes.
+User Pool handles user registration, authentication, and basic user management tasks.
+It allows users to sign up, sign in, and manage their account information.
+User Pool integrates with other AWS services, enabling you to add user authentication and authorization features to your applications easily.
+AWS Cognito Identity Pool:
+
+Now, let's imagine you are hosting a VIP event with special access privileges.
+AWS Cognito Identity Pool is like a VIP pass or access control system for your application or service.
+It provides temporary, limited-privilege AWS credentials to users or groups of users.
+Identity Pool helps you control access to AWS resources, such as S3 buckets or DynamoDB tables, based on user identity.
+When a user signs in with their credentials using a User Pool or other identity providers (like Facebook or Google), the Identity Pool verifies the user's identity and provides them with AWS credentials.
+These temporary credentials can be used to access specific AWS services and resources that you define and control.
+Identity Pool enables fine-grained access control, allowing you to grant different levels of access based on user roles or attributes.
+In summary, AWS Cognito User Pool is a user directory and authentication service that manages user identities and basic authentication tasks. On the other hand, AWS Cognito Identity Pool is an access control system that provides temporary AWS credentials and fine-grained access control to AWS resources based on user identity. Together, they offer comprehensive user management, authentication, and authorization capabilities for your applications or services in the AWS ecosystem.  
