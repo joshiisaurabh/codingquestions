@@ -1,4 +1,4 @@
-1)200 series in http?
+1)200 series in http status code?
 200 OK:
 
 This is the most common status code in the 2xx series. It indicates that the request was successful, and the server has returned the requested resource or performed the requested action.
