@@ -1,0 +1,78 @@
+1)How to find second highest salary?
+ans:
+   a)
+  
+    let highest = await _db.collection("salary").find().sort({salary:-1}).limit(1).toArray();
+    let secondhighest = await _db.collection("salary").find({salary:{$lt:counts[0].salary}}).sort({salary:-1}).limit(1).toArray();
+  
+   b) var sal = await _db.collection("salary").distinct("salary")
+     output:[
+ 
+     5000,
+
+     9000,
+
+     10000,
+     ]
+
+
+2)How to find if query for finding records uses index or not in mongodb?
+ans:
+In MongoDB, you can use the .explain() method to find out if 
+a query is using an index or not. 
+The .explain() method provides information about
+how the MongoDB query planner executed the query,
+including details about whether an index was used and which index was used.
+
+db.your_collection_name.find(your_query_criteria).explain("executionStats")
+The query will return an output containing detailed information about the query execution. Look for the "winningPlan" or "executionStats" section, which will show whether an index was used or not.
+
+If an index was used, you will see a "winningPlan" section that mentions the index used in the "inputStage" field.
+
+If an index was not used, the "winningPlan" section might show a COLLSCAN (collection scan) instead of an index-based access.
+
+3)What is facet using MongoDB?
+ans:The $facet stage allows you to create multi-faceted aggregations which 
+characterize data across multiple dimensions, or facets, 
+within a single aggregation stage. 
+Multi-faceted aggregations provide multiple filters and categorizations
+to guide data browsing and analysis. Retailers commonly use faceting
+to narrow search results by creating filters on product price,
+manufacturer, size, etc.
+This means we can create different buckets of data from a same 
+collection .
+
+ let matching = await _db.collection("salary")
+            .aggregate(
+                [
+                    {
+                        '$facet': {
+                            metadata: [{ $count: "total" }],
+                            data: [
+                                { $sort: sortOrder },
+                                { $skip: parseInt(_page.size) * parseInt(_page.pageNumber - 1) },
+                                { $limit: parseInt(_page.size) },
+                                {
+                                    $project: {
+                                        _id: 0, msg: 0, error: 0
+                                    },
+                                },
+                            ]
+                        }
+                    }
+                ]).toArray();
+
+
+4)Find max in Mongodb?
+ans:
+db.collection.find().sort({age:-1}).limit(1) // for MAX
+db.collection.find().sort({age:+1}).limit(1) // for MIN
+db.collection.aggregate({ $group : { _id: null, max: { $max : "$age" }}});
+
+5)Unset property in mongodb?
+ans:
+await _db.collection('customerorders').update({}, {$unset: {agentCashCollection:1}} , {multi: true});
+
+
+
+
