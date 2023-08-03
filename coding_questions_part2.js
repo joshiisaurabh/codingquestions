@@ -44,3 +44,25 @@ const MAX = 100;
                     [ 1, 2, 3, 4 ], [ 5, 6, 7, 8 ] ];
     printDiagonalSums(a, 4);
 
+// 2)    
+const data = [{
+    Group: 'A',
+    Name: 'SD'
+}, {
+    Group: 'B',
+    Name: 'FI'
+}, {
+    Group: 'A',
+    Name: 'FI'
+}, {
+    Group: 'B',
+    Name: 'FI'
+}];
+// Output should be SD and FI;
+//soultion 
+const output = [...new Set(data.map(item => item.Name))];
+console.log(output);
+//Find Unique values output should be SD
+var dat1=data.map((item)=>item.Name)
+var uniqueValue = dat1.filter(i => dat1.filter(j => i === j).length === 1);
+console.log(uniqueValue)
