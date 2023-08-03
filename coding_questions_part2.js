@@ -63,6 +63,8 @@ const data = [{
 const output = [...new Set(data.map(item => item.Name))];
 console.log(output);
 //Find Unique values output should be SD
+
+
 var dat1=data.map((item)=>item.Name)
 var uniqueValue = dat1.filter(i => dat1.filter(j => i === j).length === 1);
-console.log(uniqueValue)
+// console.log(uniqueValue)
