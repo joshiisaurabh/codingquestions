@@ -68,3 +68,21 @@ console.log(output);
 var dat1=data.map((item)=>item.Name)
 var uniqueValue = dat1.filter(i => dat1.filter(j => i === j).length === 1);
 // console.log(uniqueValue)
+
+
+3)Second highest number
+function findSecondHighest(arr) {
+    let firstHighest = -Infinity;
+    let secondHighest = -Infinity;
+
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] > firstHighest) {
+            secondHighest = firstHighest;
+            firstHighest = arr[i];
+        } else if (arr[i] > secondHighest && arr[i] !== firstHighest) {
+            secondHighest = arr[i];
+        }
+    }
+
+    return secondHighest;
+}
