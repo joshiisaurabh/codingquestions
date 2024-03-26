@@ -86,3 +86,36 @@ function findSecondHighest(arr) {
 
     return secondHighest;
 }
+
+4)
+function findTriplets(arr, target) {
+    const triplets = [];
+    arr.sort((a, b) => a - b); // Sort the array to use two-pointer approach
+
+    for (let i = 0; i < arr.length - 2; i++) {
+        let left = i + 1;
+        let right = arr.length - 1;
+
+        while (left < right) {
+            const sum = arr[i] + arr[left] + arr[right];
+            if (sum === target) {
+                triplets.push([arr[i], arr[left], arr[right]]);
+                left++;
+                right--;
+            } else if (sum < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+
+    return triplets;
+}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const target = 15;
+const result = findTriplets(arr, target);
+console.log(result); // Output triplets that sum up to 15
+
