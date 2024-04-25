@@ -151,3 +151,31 @@ There is also a downside in multiple assignment,
  and you don't want to leak into the global namespace.
 */
 
+5) console.log(typeof typeof 1)// output -> string
+
+6)
+console.log('1') 
+function demoFunction() {
+setTimeout(() => {
+      console.log('2')
+   }, 0)
+}
+ 
+ const promise = new Promise((resolve, reject) => {
+ console.log('3')
+ resolve('promise result')
+ })
+ 
+ demoFunction()
+ 
+ promise.then(() => {
+  console.log('4')
+ })
+  console.log('5');
+output
+//1
+//3
+//5
+//4
+//2
+
