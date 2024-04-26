@@ -1,0 +1,509 @@
+1) Advantages of TypeScript
+
+
+
+TypeScript offers several advantages over plain JavaScript:
+
+
+
+Static Typing: TypeScript introduces static typing, allowing developers to define types for variables, function parameters, and return values. This helps catch type-related errors during development and provides better code documentation.
+
+Enhanced Tooling: TypeScript provides improved tooling support, including features like code completion, refactoring, and navigation, which enhance developer productivity.
+
+Readability and Maintainability: With explicit type annotations, TypeScript code tends to be more readable and self-documenting. This makes it easier for developers to understand and maintain large codebases.
+
+Early Error Detection: TypeScript's type system catches many common errors at compile-time, such as type mismatches and missing properties, reducing the likelihood of runtime errors.
+
+Example:
+
+
+
+typescript
+
+Copy code
+
+// Plain JavaScript
+
+function greet(name) {
+
+    return 'Hello, ' + name;
+
+}
+
+
+
+console.log(greet('World')); // Output: Hello, World
+
+console.log(greet(123));     // Output: Hello, 123 (no type checking)
+
+
+
+// TypeScript
+
+function greet(name: string): string {
+
+    return 'Hello, ' + name;
+
+}
+
+
+
+console.log(greet('World')); // Output: Hello, World
+
+console.log(greet(123));     // Error: Argument of type 'number' is not assignable to parameter of type 'string'
+
+2) What is Type Checking
+
+
+
+Type checking is the process of verifying that the types used in a program are used correctly and consistently. In statically typed languages like TypeScript, type checking is performed at compile-time, ensuring that the code conforms to the specified types.
+
+
+
+Example:
+
+
+
+typescript
+
+Copy code
+
+let age: number = 25;
+
+let name: string = 'John';
+
+let isActive: boolean = true;
+
+
+
+// Type checking ensures that the following line produces a compile-time error
+
+age = '25'; // Error: Type 'string' is not assignable to type 'number'
+
+3) What is Interface
+
+
+
+An interface in TypeScript is a syntactical contract that defines the structure of an object. It specifies the properties and methods that an object must implement. Interfaces are used to define custom data types and enforce a consistent shape across different parts of the codebase.
+
+
+
+Example:
+
+
+
+typescript
+
+Copy code
+
+interface Person {
+
+    name: string;
+
+    age: number;
+
+    greet(): string;
+
+}
+
+
+
+class Student implements Person {
+
+    constructor(public name: string, public age: number) {}
+
+
+
+    greet(): string {
+
+        return `Hello, my name is ${this.name} and I am ${this.age} years old.`;
+
+    }
+
+}
+
+
+
+const student = new Student('Alice', 20);
+
+console.log(student.greet()); // Output: Hello, my name is Alice and I am 20 years old.
+
+4) What is Type and How is Type Different than Interface
+
+
+
+In TypeScript, both types and interfaces are used to define custom data shapes. The main difference between them is that interfaces are purely a compile-time construct and cannot be used for type checking values, whereas types are more flexible and can represent a wide range of data structures, including primitive types, union types, intersection types, and more.
+
+
+
+Example:
+
+
+
+typescript
+
+Copy code
+
+// Using Interface
+
+interface Point {
+
+    x: number;
+
+    y: number;
+
+}
+
+
+
+// Using Type
+
+type Point = {
+
+    x: number;
+
+    y: number;
+
+};
+
+
+
+// Type can represent more complex structures
+
+type Person = {
+
+    name: string;
+
+    age: number;
+
+    address?: string; // Optional property
+
+};
+
+
+
+// Union Type
+
+type Status = 'Active' | 'Inactive';
+
+
+
+// Intersection Type
+
+type Admin = {
+
+    role: 'Admin';
+
+} & Person;
+
+
+
+
+
+5) What is Tuple
+
+
+
+A tuple in TypeScript is a fixed-size, ordered list of elements with known types. Each element in a tuple can have a different type, and the types of elements are known at compile-time. Tuples are useful when you want to represent a fixed number of elements with specific types.
+
+
+
+Example:
+
+
+
+typescript
+
+Copy code
+
+// Declare a tuple type
+
+let person: [string, number];
+
+
+
+// Initialize it
+
+person = ['John', 25]; // OK
+
+
+
+// Accessing elements
+
+console.log(person[0]); // Output: John
+
+console.log(person[1]); // Output: 25
+
+6) What is Generics
+
+
+
+Generics in TypeScript allow you to create reusable components that can work with a variety of data types. They enable you to define functions, classes, and interfaces with placeholders for types, which are filled in when the component is used. Generics provide type safety and flexibility by allowing you to create more generic and reusable code.
+
+
+
+Example:
+
+
+
+typescript
+
+Copy code
+
+// Generic function to return the first element of an array
+
+function firstElement<T>(arr: T[]): T {
+
+    return arr[0];
+
+}
+
+
+
+const arr = [1, 2, 3, 4, 5];
+
+console.log(firstElement(arr)); // Output: 1
+
+
+
+const strArr = ['a', 'b', 'c'];
+
+console.log(firstElement(strArr)); // Output: 'a'
+
+These explanations and examples aim to provide a clear understanding of the concepts and how they are used in TypeScript. They should help candidates prepare for TypeScript-related interview questions and deepen their understanding of the language.
+
+
+
+
+
+7) Intersection Type
+
+
+
+An intersection type in TypeScript allows you to combine multiple types into a single type that has all the properties and methods of each constituent type. It represents the intersection of those types, meaning that an object of an intersection type must satisfy all the types involved.
+
+
+
+Here's an example to illustrate intersection types:
+
+
+
+typescript
+
+Copy code
+
+// Define two separate types
+
+type Dog = {
+
+    name: string;
+
+    breed: string;
+
+    bark(): void;
+
+};
+
+
+
+type Bird = {
+
+    name: string;
+
+    wingspan: number;
+
+    fly(): void;
+
+};
+
+
+
+// Define an intersection type combining Dog and Bird
+
+type DogBird = Dog & Bird;
+
+
+
+// Create an object that satisfies the DogBird type
+
+const dogBird: DogBird = {
+
+    name: 'DogBird',
+
+    breed: 'Labrador',
+
+    wingspan: 50,
+
+    bark() {
+
+        console.log('Woof!');
+
+    },
+
+    fly() {
+
+        console.log('Flap flap!');
+
+    }
+
+};
+
+
+
+// Access properties and call methods
+
+console.log(dogBird.name);     // Output: DogBird
+
+console.log(dogBird.breed);    // Output: Labrador
+
+console.log(dogBird.wingspan); // Output: 50
+
+dogBird.bark();                // Output: Woof!
+
+dogBird.fly();                 // Output: Flap flap!
+
+In this example:
+
+
+
+We define two separate types: Dog and Bird, each representing the properties and methods of a dog and a bird, respectively.
+
+We create an intersection type DogBird by using the & operator to combine Dog and Bird.
+
+The DogBird type represents objects that have all the properties and methods of both a Dog and a Bird.
+
+We create an object dogBird that satisfies the DogBird type by providing all the required properties and methods from both Dog and Bird.
+
+We can access properties and call methods on dogBird as if it were both a Dog and a Bird.
+
+Intersection types are useful when you need to work with objects that have properties and methods from multiple sources or when you want to define more specific types by combining existing types. They allow you to create more flexible and expressive type definitions in TypeScript.
+
+
+
+8) Union Type
+
+
+
+A union type in TypeScript allows you to specify that a value can be of one of several possible types. It represents the union of those types, meaning that a value of a union type can have any of the specified types.
+
+
+
+Here's an example to illustrate union types:
+
+
+
+typescript
+
+Copy code
+
+// Define a union type for a variable that can be a string or a number
+
+let variable: string | number;
+
+
+
+// Assign a string value
+
+variable = 'Hello';
+
+console.log(variable.toUpperCase()); // Output: HELLO
+
+
+
+// Assign a number value
+
+variable = 123;
+
+console.log(variable.toFixed(2)); // Output: 123.00
+
+In this example:
+
+
+
+We define a variable variable with a union type string | number, indicating that it can hold either a string or a number.
+
+We assign a string value 'Hello' to variable and then use the toUpperCase() method, which is specific to strings.
+
+We assign a number value 123 to variable and then use the toFixed() method, which is specific to numbers.
+
+TypeScript allows us to use methods or properties specific to each type within the union based on type inference.
+
+Union types are useful when you want to work with values that can have different types in different contexts, providing flexibility and type safety in TypeScript.
+
+
+
+9) Type Guard
+
+
+
+A type guard in TypeScript is a runtime check that determines the type of a variable at runtime and narrows its type within a conditional block. Type guards are typically used with union types to perform different operations based on the actual type of a value.
+
+
+
+Here's an example to illustrate type guards:
+
+
+
+typescript
+
+Copy code
+
+// Define a union type for a variable that can be a string or a number
+
+let variable: string | number = 'Hello';
+
+
+
+// Check if variable is a string using typeof
+
+if (typeof variable === 'string') {
+
+    console.log(variable.toUpperCase()); // Output: HELLO
+
+}
+
+
+
+// Modify variable to be a number
+
+variable = 123;
+
+
+
+// Check if variable is a number using typeof
+
+if (typeof variable === 'number') {
+
+    console.log(variable.toFixed(2)); // Output: 123.00
+
+}
+
+In this example:
+
+
+
+We define a variable variable with a union type string | number, initially assigning it a string value 'Hello'.
+
+We use a conditional block with typeof to check if variable is a string, and if it is, we call the toUpperCase() method on it, which is specific to strings.
+
+We then modify variable to be a number and use another conditional block with typeof to check if variable is a number, and if it is, we call the toFixed() method on it, which is specific to numbers.
+
+TypeScript narrows the type of variable within each conditional block based on the result of the type check.
+
+Type guards are useful for writing code that behaves differently based on the actual type of a value, providing type safety and avoiding runtime errors in TypeScript.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
