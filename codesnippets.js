@@ -216,4 +216,4 @@ if (NaN == NaN) {
 }
 It will actually log "else" to the console. This behavior might seem counterintuitive at first, but it's consistent with the IEEE 754 floating point standard, which defines NaN values as not equal to each other. To check if a value is NaN in JavaScript, you can use the isNaN() function.
 
-
+typeof NaN "number"
