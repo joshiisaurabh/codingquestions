@@ -221,3 +221,34 @@ typeof(undefined)
 'undefined'
 typeof(null)
 'object'
+
+10)
+console.log('Start');
+
+// Schedule a process.nextTick() callback
+process.nextTick(() => {
+  console.log('process.nextTick() callback executed');
+});
+
+// Create a promise
+const promise = new Promise((resolve, reject) => {
+  console.log('Promise created');
+  resolve();
+});
+
+// Attach a then handler to the promise
+promise.then(() => {
+  console.log('Promise resolved');
+});
+
+console.log('End');
+//output
+Start
+Promise created
+End
+process.nextTick() callback executed
+Promise resolved
+
+In Node.js, promises and process.nextTick() callbacks are both considered microtasks 
+and are executed during the microtask queue phase of the event loop. However,
+ process.nextTick() callbacks have a higher priority than promises.
