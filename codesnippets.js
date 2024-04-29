@@ -252,3 +252,35 @@ Promise resolved
 In Node.js, promises and process.nextTick() callbacks are both considered microtasks 
 and are executed during the microtask queue phase of the event loop. However,
  process.nextTick() callbacks have a higher priority than promises.
+
+11)
+console.log('Start');
+
+// Process.nextTick
+process.nextTick(() => {
+  console.log('process.nextTick() executed');
+});
+
+// Promise
+Promise.resolve().then(() => {
+  console.log('Promise resolved');
+});
+
+// setImmediate
+setImmediate(() => {
+  console.log('setImmediate() executed');
+});
+
+// setTimeout
+setTimeout(() => {
+  console.log('setTimeout() executed');
+}, 0);
+
+console.log('End');
+//
+Start
+End
+process.nextTick() executed
+Promise resolved
+setTimeout() executed
+setImmediate() executed
