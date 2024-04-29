@@ -179,3 +179,41 @@ output
 //4
 //2
 
+7)[1,2]+[3,4] in js
+Ans:
+In JavaScript, when you try to use the + operator between two arrays like [1,2] + [3,4], it does not perform array concatenation as you might expect. Instead, it performs array-to-string conversion and then concatenates the resulting strings. Here's what happens:
+
+The arrays [1,2] and [3,4] are converted to strings by calling their toString() method. This results in the strings "1,2" and "3,4" respectively.
+The + operator then concatenates these strings, resulting in "1,2" + "3,4", which gives "1,23,4".
+
+8)
+var a=10;
+
+function b(){
+console.log(a);
+var a=20
+}
+b();
+Ans:
+var a = 10;
+
+function b() {
+    var a; // declaration is hoisted
+    console.log(a); // undefined, because the assignment hasn't happened yet
+    a = 20; // assignment happens here
+}
+b();
+
+9)
+In JavaScript, NaN (Not a Number) is a special value that represents an unrepresentable value resulting from an invalid mathematical operation. Interestingly, NaN is not equal to itself according to the equality operator (==). So, when you run the code snippet:
+
+javascript
+Copy code
+if (NaN == NaN) {
+    console.log("true");
+} else {
+    console.log("else");
+}
+It will actually log "else" to the console. This behavior might seem counterintuitive at first, but it's consistent with the IEEE 754 floating point standard, which defines NaN values as not equal to each other. To check if a value is NaN in JavaScript, you can use the isNaN() function.
+
+
