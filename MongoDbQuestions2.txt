@@ -1,1 +1,34 @@
+1)Limit size of MongoDb document?
+ans: 16Mb
 
+
+2)Types of collections in mongodb?
+Ans:
+a)General Purpose Collections:
+Description: Standard collections used for storing documents with varying structures.
+Example: Storing user data in a collection named "users":
+
+{
+  "_id": ObjectId("609f9ec306af8f3e8f5aee3d"),
+  "name": "John",
+  "age": 30,
+  "email": "john@example.com"
+}
+b)Capped Collections:
+Description: Fixed-size collections with a maximum size limit, suitable for maintaining a circular buffer of recent data.
+Example: Creating a capped collection named "logs" with a maximum size of 100MB:
+
+db.createCollection("logs", { capped: true, size: 100 * 1024 * 1024 });
+
+c)GridFS Collections:
+Description: Collections used for storing and retrieving large files, exceeding the BSON document size limit of 16MB.
+Example: Storing a large file in GridFS:
+
+// Insert file metadata into "fs.files" collection
+const fileId = db.fs.files.insertOne({ filename: "large_file.txt" }).insertedId;
+// Insert file data into "fs.chunks" collection in chunks
+db.fs.chunks.insertMany(chunks);
+d)System Collections:
+Description: Collections managed internally by MongoDB to store metadata and configuration information.
+Example: Common system collections include "system.namespaces", "system.indexes", and "system.profile", used for storing namespace information, index definitions, and profiling data, respectively.
+These examples provide a succinct overview of the different types of collections in MongoDB and their typical use cases.
