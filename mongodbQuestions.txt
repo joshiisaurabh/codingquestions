@@ -68,5 +68,95 @@ ans:
 await _db.collection('customerorders').update({}, {$unset: {agentCashCollection:1}} , {multi: true});
 
 
+6)Types of Indexes?
+Single Field Index:
+
+Single field indexes are ideal for accelerating queries that filter, sort, or search based on a specific field. Let's consider a scenario where we have a collection of user profiles, and we frequently query users by their username field:
+
+db.users.createIndex({ "username": 1 })
+
+This index significantly speeds up queries like:
+
+
+
+db.users.find({ "username": "john_doe" })
+
+Compound Index:
+
+Compound indexes are invaluable when queries involve multiple fields. Suppose we have a collection of products and often filter by both category and price:
+
+db.products.createIndex({ "category": 1, "price": -1 })
+
+This compound index enhances queries such as:
+
+
+
+db.products.find({ "category": "electronics", "price": { $gt: 500 } }).sort({ "price": -1 })
+
+Multikey Index:
+
+Multikey indexes are indispensable for arrays of values within documents. Let's assume we're storing blog posts where each post contains an array of tags, and we frequently search for posts based on tags:
+
+
+
+db.posts.createIndex({ "tags": 1 })
+
+This multikey index optimizes queries like:
+
+
+
+db.posts.find({ "tags": "mongodb" })
+
+Text Index:
+
+Text indexes are tailored for full-text search capabilities. Consider a collection of articles where we want to search for articles containing specific keywords:
+
+db.articles.createIndex({ "content": "text" })
+
+This text index facilitates queries such as:
+
+db.articles.find({ $text: { $search: "MongoDB tutorial" } })
+
+Geospatial Index:
+
+Geospatial indexes empower efficient geospatial queries. Suppose we're managing a location-based service and need to find nearby restaurants:
+
+
+
+db.restaurants.createIndex({ "location": "2dsphere" })
+
+This geospatial index improves queries like:
+
+db.restaurants.find({ "location": { $near: { $geometry: { type: "Point", coordinates: [longitude, latitude] }, $maxDistance: 1000 } } })
+
+Hashed Index:
+
+Hashed indexes are primarily used for sharding, distributing data across multiple servers based on a hashed shard key. Consider a collection of user profiles where we want to ensure even distribution across shards:
+
+db.users.createIndex({ "_id": "hashed" })
+
+This hashed index facilitates efficient sharding of user data.
+
+
+7)Aggregation in MongoDB?
+Ans:
+Aggregation in MongoDB is a powerful way to process and transform documents in a collection. It allows you to perform various operations such as filtering, grouping, sorting, and computing aggregate values on the data stored in your MongoDB database.
+
+MongoDB's aggregation framework provides a set of operators and stages that you can use to build complex pipelines for data manipulation. Here's an overview of some common stages and operators used in MongoDB aggregation:
+
+$match: Filters documents based on specified criteria. It works similar to the find method but operates within the aggregation pipeline.
+$group: Groups documents by a specified key and applies aggregation expressions to compute aggregate values for each group.
+$project: Reshapes documents by including, excluding, or renaming fields, as well as computing new fields based on existing ones.
+$sort: Sorts documents based on specified fields and sorting order.
+$limit: Limits the number of documents passed to the next stage in the pipeline.
+$skip: Skips a specified number of documents and passes the remaining documents to the next stage in the pipeline.
+$unwind: Deconstructs an array field from input documents and outputs one document for each element of the array.
+$lookup: Performs a left outer join between documents from the input collection and documents from another collection based on specified criteria.
+$addFields: Adds new fields to documents based on specified expressions.
+$group: Groups documents by a specified key and applies aggregation expressions to compute aggregate values for each group
+
+
+
+
 
 
