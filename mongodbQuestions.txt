@@ -5,15 +5,9 @@ ans:
     let highest = await _db.collection("salary").find().sort({salary:-1}).limit(1).toArray();
     let secondhighest = await _db.collection("salary").find({salary:{$lt:counts[0].salary}}).sort({salary:-1}).limit(1).toArray();
   
-   b) var sal = await _db.collection("salary").distinct("salary")
-     output:[
- 
-     5000,
+   
+b)db.collection.distinct("salary").sort({ "salary": -1 }).skip(1).limit(1)
 
-     9000,
-
-     10000,
-     ]
 
 
 2)How to find if query for finding records uses index or not in mongodb?
